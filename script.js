@@ -610,11 +610,8 @@ function initContactForm() {
         submitBtn.disabled = true;
 
         try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1500));
-
-            // Store submission locally (for demo purposes)
-            saveFormSubmission(data);
+            // Send to backend
+            await saveFormSubmission(data);
 
             showFormMessage('Thank you! We\'ll get back to you within 24 hours.', 'success');
             contactForm.reset();
@@ -642,14 +639,18 @@ function showFormMessage(message, type) {
     }, 5000);
 }
 
-function saveFormSubmission(data) {
-    // Store submissions in localStorage for demo
-    const submissions = JSON.parse(localStorage.getItem('kfs_submissions') || '[]');
-    submissions.push({
-        ...data,
-        timestamp: new Date().toISOString()
+async function saveFormSubmission(data) {
+    const response = await fetch('/api/requests', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
     });
-    localStorage.setItem('kfs_submissions', JSON.stringify(submissions));
+
+    if (!response.ok) {
+        throw new Error('Failed to submit form');
+    }
 }
 
 // ============================================

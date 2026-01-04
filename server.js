@@ -21,7 +21,8 @@ const auth = (req, res, next) => {
 
     const isProtected = req.path === '/admin.html' ||
         (req.method !== 'GET' && (req.path.startsWith('/api/services') || req.path.startsWith('/api/products'))) ||
-        req.path.startsWith('/api/upload');
+        req.path.startsWith('/api/upload') ||
+        (req.method === 'GET' && req.path.startsWith('/api/requests'));
 
     if (!isProtected) {
         return next();
@@ -124,6 +125,49 @@ app.get('/api/images', (req, res) => {
         if (err) return res.status(500).json({ error: 'Failed to list images' });
         const images = files.filter(file => /\.(png|jpg|jpeg|gif)$/i.test(file));
         res.json(images);
+    });
+});
+
+// Requests (POST public, GET protected)
+app.get('/api/requests', (req, res) => {
+    const requestsPath = path.join(dataDir, 'requests.json');
+    if (!fs.existsSync(requestsPath)) {
+        return res.json([]);
+    }
+    res.sendFile(requestsPath);
+});
+
+app.post('/api/requests', (req, res) => {
+    console.log('Receiving request...', req.body);
+    const requestsPath = path.join(dataDir, 'requests.json');
+
+    // Read existing
+    let requests = [];
+    if (fs.existsSync(requestsPath)) {
+        try {
+            requests = JSON.parse(fs.readFileSync(requestsPath));
+        } catch (e) {
+            requests = [];
+        }
+    }
+
+    // Add new
+    const newRequest = {
+        id: Date.now().toString(),
+        ...req.body,
+        timestamp: new Date().toISOString(),
+        status: 'new' // new, contacted, closed
+    };
+    requests.unshift(newRequest); // Add to top
+
+    // Save
+    fs.writeFile(requestsPath, JSON.stringify(requests, null, 2), (err) => {
+        if (err) {
+            console.error('Error saving request:', err);
+            return res.status(500).json({ error: 'Failed to save request' });
+        }
+        console.log('Request saved successfully.');
+        res.json({ success: true });
     });
 });
 

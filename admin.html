@@ -207,6 +207,17 @@
     </header>
 
     <main class="container admin-main">
+        <!-- Requests Section -->
+        <section class="admin-section">
+            <div class="admin-section-header">
+                <h2>Callback Requests</h2>
+                <button class="btn btn-secondary btn-sm" onclick="location.reload()">🔄 Refresh</button>
+            </div>
+            <div class="admin-list" id="requestsList">
+                <!-- Requests rendered here -->
+            </div>
+        </section>
+
         <!-- Products Section -->
         <section class="admin-section">
             <div class="admin-section-header">
@@ -339,6 +350,7 @@
     <script>
         let products = [];
         let services = [];
+        let requests = [];
         let images = [];
         let editingId = null;
         let currentImageInputId = 'p_image';
@@ -391,15 +403,18 @@
 
         async function loadData() {
             try {
-                const [pRes, sRes, iRes] = await Promise.all([
+                const [pRes, sRes, iRes, rRes] = await Promise.all([
                     fetch('/api/products'),
                     fetch('/api/services'),
-                    fetch('/api/images')
+                    fetch('/api/images'),
+                    fetch('/api/requests')
                 ]);
                 products = await pRes.json();
                 services = await sRes.json();
                 images = await iRes.json();
+                requests = await rRes.json();
 
+                renderRequests();
                 renderProducts();
                 renderServices();
                 renderImageSelector();
@@ -491,6 +506,32 @@
         }
 
         // Render Lists
+        function renderRequests() {
+            const container = document.getElementById('requestsList');
+            if (!requests || requests.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:var(--color-gray-500);">No pending callback requests.</p>';
+                return;
+            }
+            container.innerHTML = requests.map(r => `
+                <div class="admin-item" style="grid-template-columns: 1fr;">
+                    <div class="admin-item-content">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
+                            <h4>${r.firstName} ${r.lastName}</h4>
+                            <span style="font-size:0.8rem; color:var(--color-gray-500);">${new Date(r.timestamp).toLocaleString()}</span>
+                        </div>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem; margin-bottom:0.5rem; font-size:0.9rem;">
+                            <div><strong>Phone:</strong> <a href="tel:${r.phone}">${r.phone}</a></div>
+                            <div><strong>Email:</strong> <a href="mailto:${r.email}">${r.email}</a></div>
+                            <div><strong>Service:</strong> ${r.service}</div>
+                        </div>
+                        <div style="background:var(--color-gray-50); padding:0.75rem; border-radius:0.5rem; font-size:0.95rem;">
+                            ${r.message}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
         function renderProducts() {
             const container = document.getElementById('productsList');
             container.innerHTML = products.map(p => `

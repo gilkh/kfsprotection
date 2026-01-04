@@ -22,6 +22,53 @@ let servicesData = [];
 let productsData = [];
 
 // ============================================
+// Optimized Image Helper
+// ============================================
+/**
+ * Converts an image path to use optimized web versions
+ * @param {string} imagePath - Original image path like 'images/hero.png'
+ * @returns {object} Object with webp and png paths for optimized versions
+ */
+function getOptimizedImagePaths(imagePath) {
+    if (!imagePath || !imagePath.startsWith('images/')) {
+        return { webp: imagePath, png: imagePath, original: imagePath };
+    }
+
+    // Extract filename without extension
+    const match = imagePath.match(/images\/(.+)\.(png|jpg|jpeg)$/i);
+    if (!match) {
+        return { webp: imagePath, png: imagePath, original: imagePath };
+    }
+
+    const baseName = match[1];
+    return {
+        webp: `images/web/${baseName}.webp`,
+        png: `images/web/${baseName}.png`,
+        original: imagePath
+    };
+}
+
+/**
+ * Creates a <picture> element HTML for optimized images with fallbacks
+ * @param {string} imagePath - Original image path
+ * @param {string} alt - Alt text for the image
+ * @param {string} className - Optional CSS class for the img element
+ * @returns {string} HTML string for picture element
+ */
+function createOptimizedImage(imagePath, alt, className = '') {
+    const paths = getOptimizedImagePaths(imagePath);
+    const classAttr = className ? `class="${className}"` : '';
+
+    return `
+        <picture>
+            <source srcset="${paths.webp}" type="image/webp">
+            <source srcset="${paths.png}" type="image/png">
+            <img src="${paths.png}" alt="${alt}" loading="lazy" ${classAttr}>
+        </picture>
+    `;
+}
+
+// ============================================
 // Initialize Application
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
@@ -154,7 +201,7 @@ function renderServices() {
     servicesGrid.innerHTML = servicesData.map(service => `
         <div class="service-card">
             <div class="service-image">
-                <img src="${service.image || 'images/logo.png'}" alt="${service.title}" loading="lazy">
+                ${createOptimizedImage(service.image || 'images/logo.png', service.title)}
             </div>
             <div class="service-content">
                 <div class="service-icon">${service.icon}</div>
@@ -228,7 +275,7 @@ function renderProducts(filter = 'all') {
             <div class="product-image">
                 ${product.featured ? '<span class="product-badge">Featured</span>' : ''}
                 ${product.image && product.image.startsWith('images/')
-            ? `<img src="${product.image}" alt="${product.name}" loading="lazy">`
+            ? createOptimizedImage(product.image, product.name)
             : `<div class="product-image-placeholder">${getProductIcon(product.category)}</div>`
         }
             </div>

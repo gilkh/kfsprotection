@@ -127,7 +127,7 @@ const productsData = [
             "discharge": "10-15 seconds"
         },
         "price": "From $85",
-        "image": "images/extinguisher.png",
+        "image": "images/co2-extinguisher.png",
         "featured": true
     },
     {
@@ -157,7 +157,7 @@ const productsData = [
             "alarm": "85dB at 3m"
         },
         "price": "From $35",
-        "image": "images/smoke-detector.png",
+        "image": "images/heat-detector.png",
         "featured": false
     },
     {
@@ -187,7 +187,7 @@ const productsData = [
             "certification": "EN 54-2/4"
         },
         "price": "From $580",
-        "image": "images/alarm-panel.png",
+        "image": "images/alarm-panel-8zone.png",
         "featured": false
     },
     {
@@ -217,7 +217,7 @@ const productsData = [
             "finish": "Red RAL 3000"
         },
         "price": "From $95",
-        "image": "images/hose-reel.png",
+        "image": "images/fire-hose-cabinet.png",
         "featured": false
     },
     {
@@ -247,7 +247,7 @@ const productsData = [
             "visibility": "Up to 30m"
         },
         "price": "From $45",
-        "image": "images/emergency-light.png",
+        "image": "images/illuminated-exit-sign.png",
         "featured": false
     },
     {
@@ -277,7 +277,7 @@ const productsData = [
             "case": "Wall Mount PVC Case"
         },
         "price": "From $22",
-        "image": "images/extinguisher.png",
+        "image": "images/fire-blanket.png",
         "featured": false
     }
 ];

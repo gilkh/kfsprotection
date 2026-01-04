@@ -17,7 +17,7 @@ const CONFIG = {
     medium: {
         width: 400,
         quality: 75,
-        patterns: ['service-', 'extinguisher', 'sprinkler', 'smoke-detector', 'alarm-panel', 'hose-reel', 'emergency-light']
+        patterns: ['service-', 'extinguisher', 'sprinkler', 'smoke-detector', 'heat-detector', 'alarm-panel', 'hose', 'emergency-light', 'exit-sign', 'fire-blanket']
     },
     // Logo and icons
     small: {

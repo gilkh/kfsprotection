@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KFS Protection - Admin Panel</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+    <style>
+        body {
+            background: var(--color-gray-50);
+            padding-bottom: 4rem;
+        }
+
+        .admin-header {
+            background: var(--color-gray-900);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .admin-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-main {
+            margin-top: 80px;
+        }
+
+        .admin-section {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .admin-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .admin-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .admin-item {
+            display: grid;
+            grid-template-columns: 80px 1fr auto;
+            gap: 1.5rem;
+            padding: 1rem;
+            border: 1px solid var(--color-gray-200);
+            border-radius: 0.5rem;
+            align-items: center;
+            background: white;
+        }
+
+        .admin-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 0.5rem;
+            background: var(--color-gray-100);
+        }
+
+        .admin-item-content h4 {
+            margin-bottom: 0.25rem;
+            font-size: 1.1rem;
+        }
+
+        .admin-item-content p {
+            font-size: 0.9rem;
+            color: var(--color-gray-500);
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .btn-danger:hover {
+            background: #fecaca;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 600px;
+            padding: 2rem;
+            border-radius: 1rem;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Form */
+        .image-select-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 0.5rem;
+            border: 1px solid var(--color-gray-200);
+            border-radius: 0.5rem;
+        }
+
+        .image-option {
+            border: 2px solid transparent;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-option.selected {
+            border-color: var(--color-orange-red);
+            box-shadow: 0 0 0 2px rgba(255, 69, 0, 0.2);
+        }
+
+        .image-option img {
+            width: 100%;
+            height: 60px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .image-option span {
+            display: block;
+            font-size: 0.7rem;
+            text-align: center;
+            padding: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .form-row-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="admin-header">
+        <div class="container">
+            <div class="nav-logo">
+                <img src="images/logo.png" alt="KFS Protection Logo"
+                    style="height: 50px; width: auto; object-fit: contain; margin-right: 0.5rem;">
+                KFS Admin
+            </div>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <button onclick="saveAll()" class="btn btn-primary btn-sm" id="globalSaveBtn">💾 Save All</button>
+                <a href="/" class="btn btn-outline btn-sm">View Website</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container admin-main">
+        <!-- Products Section -->
+        <section class="admin-section">
+            <div class="admin-section-header">
+                <h2>Products</h2>
+                <button class="btn btn-primary" onclick="openProductModal()">+ Add Product</button>
+            </div>
+            <div class="admin-list" id="productsList">
+                <!-- Products rendered here -->
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section class="admin-section">
+            <div class="admin-section-header">
+                <h2>Services (JSON)</h2>
+                <button class="btn btn-primary" onclick="openServiceModal()">+ Add Service</button>
+            </div>
+            <div class="admin-list" id="servicesList">
+                <!-- Services rendered here -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Edit Product</h3>
+                <button class="btn-icon" onclick="closeModal('productModal')">✕</button>
+            </div>
+            <form id="productForm">
+                <input type="hidden" id="p_id">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="p_name" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="p_category_select" onchange="handleCategoryChange()"
+                            style="width: 100%; padding: 0.5rem; border: 1px solid var(--color-gray-200); border-radius: 0.25rem;">
+                        </select>
+                        <input type="text" id="p_category_new" placeholder="Enter new category name"
+                            style="display: none; width: 100%; margin-top: 0.5rem; padding: 0.5rem; border: 1px solid var(--color-gray-200); border-radius: 0.25rem;">
+                    </div>
+                    <div class="form-group">
+                        <label>Price</label>
+                        <input type="text" id="p_price" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="p_description" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Image</label>
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <input type="text" id="p_image" placeholder="images/filename.png" style="flex: 1;">
+                        <input type="file" id="imageUploadInput" accept="image/*" style="display: none;"
+                            onchange="handleImageUpload()">
+                        <button type="button" class="btn btn-secondary btn-sm"
+                            onclick="document.getElementById('imageUploadInput').click()">+ Upload New</button>
+                    </div>
+                    <div class="image-select-grid" id="imageSelector">
+                        <!-- Images loaded here -->
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Specifications (Key : Value)</label>
+                    <div id="specsContainer"></div>
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="addSpecRow()">+ Add Spec</button>
+                </div>
+
+                <div class="form-submit">
+                    <button type="submit" class="btn btn-primary">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Service Modal -->
+    <div class="modal" id="serviceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="serviceModalTitle">Edit Service</h3>
+                <button class="btn-icon" onclick="closeModal('serviceModal')">✕</button>
+            </div>
+            <form id="serviceForm">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="s_title" required>
+                </div>
+                <div class="form-group">
+                    <label>Icon (Emoji)</label>
+                    <input type="text" id="s_icon" required style="width: 50px; text-align: center;">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="s_description" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Features (One per line)</label>
+                    <textarea id="s_features" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Image</label>
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 0.5rem;">
+                        <input type="text" id="s_image" placeholder="images/filename.png" style="flex: 1;">
+                        <button type="button" class="btn btn-secondary btn-sm"
+                            onclick="document.getElementById('imageUploadInput').click()">+ Upload New</button>
+                    </div>
+                    <div class="image-select-grid" id="serviceImageSelector">
+                        <!-- Images loaded here -->
+                    </div>
+                </div>
+                <div class="form-submit">
+                    <button type="submit" class="btn btn-primary">Save Service</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast"
+        style="visibility: hidden; min-width: 250px; margin-left: -125px; background-color: #333; color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 3000; left: 50%; bottom: 30px; font-size: 17px; opacity: 0; transition: opacity 0.5s, bottom 0.5s;">
+        Notification
+    </div>
+
+    <script>
+        let products = [];
+        let services = [];
+        let images = [];
+        let editingId = null;
+        let currentImageInputId = 'p_image';
+        let currentImageSelectorId = 'imageSelector';
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+        });
+
+        async function saveAll() {
+            const btn = document.getElementById('globalSaveBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '⏳ Saving...';
+            btn.disabled = true;
+
+            try {
+                // Save both in parallel
+                const [pRes, sRes] = await Promise.all([saveProducts(), saveServices()]);
+
+                if (pRes && sRes) {
+                    showToast('All changes saved successfully!', 'success');
+                } else {
+                    showToast('Some changes failed to save. Check console.', 'error');
+                }
+            } catch (err) {
+                showToast('Error executing save: ' + err.message, 'error');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.backgroundColor = type === 'error' ? '#ef4444' : '#22c55e';
+            toast.style.visibility = 'visible';
+            toast.style.opacity = '1';
+            toast.style.bottom = '50px';
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.bottom = '30px';
+                setTimeout(() => {
+                    toast.style.visibility = 'hidden';
+                }, 500);
+            }, 3000);
+        }
+
+        async function loadData() {
+            try {
+                const [pRes, sRes, iRes] = await Promise.all([
+                    fetch('/api/products'),
+                    fetch('/api/services'),
+                    fetch('/api/images')
+                ]);
+                products = await pRes.json();
+                services = await sRes.json();
+                images = await iRes.json();
+
+                renderProducts();
+                renderServices();
+                renderImageSelector();
+                renderCategories();
+            } catch (err) {
+                console.error("Failed to load data", err);
+                showToast("Failed to load data. Is the server running?", 'error');
+            }
+        }
+
+        function renderCategories(selectedVal = null) {
+            const categories = [...new Set(products.map(p => p.category).filter(Boolean))].sort();
+            const select = document.getElementById('p_category_select');
+
+            let html = categories.map(c => `<option value="${c}">${c}</option>`).join('');
+            html += `<option value="__NEW__">➕ Add New Category...</option>`;
+            select.innerHTML = html;
+
+            if (selectedVal && categories.includes(selectedVal)) {
+                select.value = selectedVal;
+            } else if (categories.length > 0 && !selectedVal) {
+                select.value = categories[0];
+            }
+
+            handleCategoryChange();
+        }
+
+        function handleCategoryChange() {
+            const select = document.getElementById('p_category_select');
+            const input = document.getElementById('p_category_new');
+            if (select.value === '__NEW__') {
+                input.style.display = 'block';
+                input.focus();
+                input.required = true;
+            } else {
+                input.style.display = 'none';
+                input.required = false;
+            }
+        }
+
+        async function handleImageUpload() {
+            const input = document.getElementById('imageUploadInput');
+            if (!input.files || !input.files[0]) return;
+
+            const file = input.files[0];
+            const formData = new FormData();
+            formData.append('image', file);
+
+            try {
+                const res = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!res.ok) throw new Error('Upload failed');
+
+                const data = await res.json();
+
+                // Refresh images
+                const iRes = await fetch('/api/images');
+                images = await iRes.json();
+                renderImageSelector(currentImageSelectorId);
+
+                // Select the new image
+                const relativePath = `images/${data.filename}`;
+                document.getElementById(currentImageInputId).value = relativePath;
+
+                showToast('Image uploaded successfully');
+
+                // Highlight in grid (need to find the element)
+                setTimeout(() => {
+                    const options = document.querySelectorAll('.image-option');
+                    options.forEach(opt => {
+                        if (opt.querySelector('span').textContent === data.filename) {
+                            opt.classList.add('selected');
+                            opt.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        } else {
+                            opt.classList.remove('selected');
+                        }
+                    });
+                }, 100);
+
+            } catch (err) {
+                showToast('Error uploading image: ' + err.message, 'error');
+            }
+
+            // Reset input
+            input.value = '';
+        }
+
+        // Render Lists
+        function renderProducts() {
+            const container = document.getElementById('productsList');
+            container.innerHTML = products.map(p => `
+                <div class="admin-item">
+                    <img src="${p.image && !p.image.startsWith('http') ? p.image : 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>'}" alt="${p.name}">
+                    <div class="admin-item-content">
+                        <h4>${p.name} ${p.featured ? '<span class="badge" style="margin:0; font-size:0.7em">Featured</span>' : ''}</h4>
+                        <p>${p.category} • ${p.price}</p>
+                    </div>
+                    <div class="admin-actions">
+                        <button class="btn btn-secondary btn-sm" onclick="editProduct('${p.id}')">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteProduct('${p.id}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderServices() {
+            const container = document.getElementById('servicesList');
+            container.innerHTML = services.map(s => `
+                <div class="admin-item" style="grid-template-columns: 80px 1fr auto;">
+                    <img src="${s.image || 'images/logo.png'}" style="width:80px;height:60px;object-fit:cover;border-radius:0.5rem">
+                    <div class="admin-item-content">
+                        <h4>${s.title} <span style="font-size: 1.2rem;">${s.icon}</span></h4>
+                        <p>${s.description.substring(0, 80)}...</p>
+                    </div>
+                    <div class="admin-actions">
+                        <button class="btn btn-secondary btn-sm" onclick="editService('${s.id}')">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteService('${s.id}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderImageSelector(containerId = 'imageSelector') {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = images.map(img => `
+                <div class="image-option" onclick="selectImage('images/${img}', this)">
+                    <img src="images/${img}" loading="lazy">
+                    <span>${img}</span>
+                </div>
+            `).join('');
+        }
+
+        // Product Modal Logic
+        function openProductModal() {
+            editingId = null;
+            document.getElementById('modalTitle').textContent = 'Add Product';
+            document.getElementById('productForm').reset();
+            document.getElementById('specsContainer').innerHTML = '';
+            document.getElementById('productModal').classList.add('open');
+
+            currentImageInputId = 'p_image';
+            currentImageSelectorId = 'imageSelector';
+            renderImageSelector('imageSelector');
+
+            renderCategories(); // Populate select
+            addSpecRow(); // Add one empty row
+        }
+
+        function editProduct(id) {
+            editingId = id;
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+
+            document.getElementById('modalTitle').textContent = 'Edit Product';
+            document.getElementById('p_name').value = p.name;
+            renderCategories(p.category); // Set category
+            document.getElementById('p_price').value = p.price;
+            document.getElementById('p_description').value = p.description;
+            document.getElementById('p_image').value = p.image;
+
+            const specsContainer = document.getElementById('specsContainer');
+            specsContainer.innerHTML = '';
+            if (p.specs) {
+                Object.entries(p.specs).forEach(([k, v]) => addSpecRow(k, v));
+            } else {
+                addSpecRow();
+            }
+
+            currentImageInputId = 'p_image';
+            currentImageSelectorId = 'imageSelector';
+            renderImageSelector('imageSelector');
+
+            document.getElementById('productModal').classList.add('open');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('open');
+        }
+
+        function selectImage(path, el) {
+            document.getElementById(currentImageInputId).value = path;
+            document.querySelectorAll('.image-option').forEach(x => x.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function addSpecRow(key = '', val = '') {
+            const div = document.createElement('div');
+            div.className = 'form-row-specs';
+            div.innerHTML = `
+                <input type="text" placeholder="Spec Name" value="${key}" class="spec-key">
+                <input type="text" placeholder="Value" value="${val}" class="spec-val">
+            `;
+            document.getElementById('specsContainer').appendChild(div);
+        }
+
+        // Save Logic
+        document.getElementById('productForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const selectVal = document.getElementById('p_category_select').value;
+            const inputVal = document.getElementById('p_category_new').value;
+
+            if (selectVal === '__NEW__' && !inputVal.trim()) {
+                alert('Please enter a category name');
+                return;
+            }
+
+            const finalCategory = (selectVal === '__NEW__') ? inputVal.trim() : selectVal;
+
+            const newProduct = {
+                id: editingId || 'prod-' + Date.now(),
+                name: document.getElementById('p_name').value,
+                category: finalCategory,
+                price: document.getElementById('p_price').value,
+                description: document.getElementById('p_description').value,
+                image: document.getElementById('p_image').value,
+                featured: true, // simplified
+                specs: {}
+            };
+
+            // Gather specs
+            document.querySelectorAll('.form-row-specs').forEach(row => {
+                const k = row.querySelector('.spec-key').value.trim();
+                const v = row.querySelector('.spec-val').value.trim();
+                if (k && v) newProduct.specs[k] = v;
+            });
+
+            if (editingId) {
+                const index = products.findIndex(x => x.id === editingId);
+                products[index] = newProduct;
+            } else {
+                products.push(newProduct);
+            }
+
+            if (await saveProducts()) {
+                closeModal('productModal');
+                renderProducts();
+                renderCategories();
+                showToast('Product saved successfully!', 'success');
+            }
+        });
+
+        async function deleteProduct(id) {
+            if (!confirm('Are you sure?')) return;
+            products = products.filter(p => p.id !== id);
+            if (await saveProducts()) {
+                renderProducts();
+                renderCategories();
+                showToast('Product deleted.', 'success');
+            }
+        }
+
+        async function saveProducts() {
+            try {
+                const res = await fetch('/api/products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(products)
+                });
+                if (!res.ok) throw new Error('Failed to save');
+                return true;
+            } catch (e) {
+                showToast('Error saving products!', 'error');
+                return false;
+            }
+        }
+
+        // --- Services Logic ---
+        function openServiceModal() {
+            editingId = null;
+            document.getElementById('serviceModalTitle').textContent = 'Add Service';
+            document.getElementById('serviceForm').reset();
+            document.getElementById('serviceModal').classList.add('open');
+
+            currentImageInputId = 's_image';
+            currentImageSelectorId = 'serviceImageSelector';
+            renderImageSelector('serviceImageSelector');
+        }
+
+        function editService(id) {
+            editingId = id;
+            const s = services.find(x => x.id === id);
+            if (!s) return;
+
+            document.getElementById('serviceModalTitle').textContent = 'Edit Service';
+            document.getElementById('s_title').value = s.title;
+            document.getElementById('s_description').value = s.description;
+            document.getElementById('s_icon').value = s.icon;
+            document.getElementById('s_features').value = s.features.join('\n');
+            document.getElementById('s_image').value = s.image || '';
+
+            currentImageInputId = 's_image';
+            currentImageSelectorId = 'serviceImageSelector';
+            renderImageSelector('serviceImageSelector');
+
+            document.getElementById('serviceModal').classList.add('open');
+        }
+
+        async function deleteService(id) {
+            if (!confirm('Are you sure?')) return;
+            services = services.filter(s => s.id !== id);
+            if (await saveServices()) {
+                renderServices();
+                showToast('Service deleted.', 'success');
+            }
+        }
+
+        document.getElementById('serviceForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const newService = {
+                id: editingId || 'serv-' + Date.now(),
+                title: document.getElementById('s_title').value,
+                description: document.getElementById('s_description').value,
+                icon: document.getElementById('s_icon').value,
+                image: document.getElementById('s_image').value,
+                features: document.getElementById('s_features').value.split('\n').filter(x => x.trim())
+            };
+
+            if (editingId) {
+                const index = services.findIndex(x => x.id === editingId);
+                services[index] = newService;
+            } else {
+                services.push(newService);
+            }
+
+            if (await saveServices()) {
+                closeModal('serviceModal');
+                renderServices();
+                showToast('Service saved successfully!', 'success');
+            }
+        });
+
+        async function saveServices() {
+            try {
+                const res = await fetch('/api/services', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(services)
+                });
+                if (!res.ok) throw new Error('Failed to save');
+                return true;
+            } catch (e) {
+                showToast('Error saving services!', 'error');
+                return false;
+            }
+        }
+    </script>
+</body>
+
+</html>
+
+```

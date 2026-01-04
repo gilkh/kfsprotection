@@ -1,0 +1,182 @@
+[
+    {
+        "id": "ext-abc-5kg",
+        "name": "ABC Dry Powder Extinguisher",
+        "category": "Fire Extinguishers",
+        "description": "Multi-purpose dry chemical fire extinguisher suitable for Class A, B, and C fires. Ideal for offices, homes, and vehicles.",
+        "specs": {
+            "capacity": "5 kg",
+            "rating": "3A:40B:C",
+            "range": "4-6 meters",
+            "discharge": "15-20 seconds"
+        },
+        "price": "From $45",
+        "image": "images/extinguisher.png",
+        "featured": true
+    },
+    {
+        "id": "ext-co2-5kg",
+        "name": "CO2 Fire Extinguisher",
+        "category": "Fire Extinguishers",
+        "description": "Carbon dioxide extinguisher for electrical fires and flammable liquids. Leaves no residue, perfect for server rooms and laboratories.",
+        "specs": {
+            "capacity": "5 kg",
+            "rating": "55B",
+            "range": "1-3 meters",
+            "discharge": "10-15 seconds"
+        },
+        "price": "From $85",
+        "image": "images/extinguisher.png",
+        "featured": true
+    },
+    {
+        "id": "detector-smoke-optical",
+        "name": "Optical Smoke Detector",
+        "category": "Smoke Detectors",
+        "description": "Advanced optical smoke detector with LED indicator and low battery warning. Suitable for bedrooms, living areas, and corridors.",
+        "specs": {
+            "power": "9V Battery / 240V Mains",
+            "coverage": "Up to 60m²",
+            "sensitivity": "EN 14604 Compliant",
+            "alarm": "85dB at 3m"
+        },
+        "price": "From $25",
+        "image": "images/smoke-detector.png",
+        "featured": true
+    },
+    {
+        "id": "detector-heat",
+        "name": "Heat Detector",
+        "category": "Smoke Detectors",
+        "description": "Fixed temperature heat detector ideal for kitchens and garages where smoke detectors may cause false alarms.",
+        "specs": {
+            "trigger": "57°C Fixed Temperature",
+            "coverage": "Up to 50m²",
+            "certification": "EN 54-5",
+            "alarm": "85dB at 3m"
+        },
+        "price": "From $35",
+        "image": "images/smoke-detector.png",
+        "featured": false
+    },
+    {
+        "id": "alarm-panel-4zone",
+        "name": "4-Zone Fire Alarm Panel",
+        "category": "Alarm Panels",
+        "description": "Conventional 4-zone fire alarm control panel with battery backup. Perfect for small to medium commercial buildings.",
+        "specs": {
+            "zones": "4 Zones",
+            "backup": "24hr Battery Backup",
+            "outputs": "2 Sounder Circuits",
+            "certification": "EN 54-2/4"
+        },
+        "price": "From $320",
+        "image": "images/alarm-panel.png",
+        "featured": true
+    },
+    {
+        "id": "alarm-panel-8zone",
+        "name": "8-Zone Fire Alarm Panel",
+        "category": "Alarm Panels",
+        "description": "Expandable 8-zone fire alarm control panel with advanced features including event logging and network connectivity.",
+        "specs": {
+            "zones": "8 Zones (Expandable)",
+            "backup": "72hr Battery Backup",
+            "outputs": "4 Sounder Circuits",
+            "certification": "EN 54-2/4"
+        },
+        "price": "From $580",
+        "image": "images/alarm-panel.png",
+        "featured": false
+    },
+    {
+        "id": "hose-reel-25m",
+        "name": "Fire Hose Reel - 25m",
+        "category": "Fire Hoses",
+        "description": "Wall-mounted fire hose reel with 25 meters of 19mm hose. Manual or automatic swing arm options available.",
+        "specs": {
+            "length": "25 meters",
+            "diameter": "19mm",
+            "pressure": "12 Bar Max",
+            "nozzle": "Adjustable Spray/Jet"
+        },
+        "price": "From $180",
+        "image": "images/hose-reel.png",
+        "featured": true
+    },
+    {
+        "id": "hose-cabinet",
+        "name": "Fire Hose Cabinet",
+        "category": "Fire Hoses",
+        "description": "Steel fire hose cabinet with safety glass door. Can accommodate hose reel and extinguisher.",
+        "specs": {
+            "material": "Powder Coated Steel",
+            "size": "600x800x250mm",
+            "door": "Safety Glass with Break Rod",
+            "finish": "Red RAL 3000"
+        },
+        "price": "From $95",
+        "image": "images/hose-reel.png",
+        "featured": false
+    },
+    {
+        "id": "emergency-light-led",
+        "name": "LED Emergency Light",
+        "category": "Emergency Lighting",
+        "description": "High-output LED emergency light with 3-hour battery backup. Self-testing function with LED status indicator.",
+        "specs": {
+            "lumens": "400 lm",
+            "battery": "3hr Lithium Backup",
+            "testing": "Auto Self-Test",
+            "certification": "EN 60598-2-22"
+        },
+        "price": "From $65",
+        "image": "images/emergency-light.png",
+        "featured": true
+    },
+    {
+        "id": "exit-sign-led",
+        "name": "Illuminated Exit Sign",
+        "category": "Emergency Lighting",
+        "description": "LED illuminated exit sign with emergency battery backup. Surface or recessed mounting options.",
+        "specs": {
+            "type": "LED Illuminated",
+            "battery": "3hr Backup",
+            "mounting": "Surface/Recessed",
+            "visibility": "Up to 30m"
+        },
+        "price": "From $45",
+        "image": "images/emergency-light.png",
+        "featured": false
+    },
+    {
+        "id": "sprinkler-head-pendent",
+        "name": "Pendent Sprinkler Head",
+        "category": "Sprinkler Systems",
+        "description": "Standard response pendent sprinkler head for commercial and residential fire suppression systems.",
+        "specs": {
+            "response": "Standard Response",
+            "temperature": "68°C (155°F)",
+            "kFactor": "K5.6",
+            "finish": "Chrome/White/Brass"
+        },
+        "price": "From $12",
+        "image": "images/sprinkler.png",
+        "featured": false
+    },
+    {
+        "id": "fire-blanket-1m",
+        "name": "Fire Blanket 1m x 1m",
+        "category": "Fire Safety Equipment",
+        "description": "Woven glass fiber fire blanket for smothering small fires. Essential for kitchens and workshops.",
+        "specs": {
+            "size": "1m x 1m",
+            "material": "Woven Glass Fiber",
+            "temperature": "Up to 550°C",
+            "case": "Wall Mount PVC Case"
+        },
+        "price": "From $22",
+        "image": "images/extinguisher.png",
+        "featured": false
+    }
+]

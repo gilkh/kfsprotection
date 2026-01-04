@@ -1,0 +1,80 @@
+[
+    {
+        "id": "installation",
+        "title": "System Installation",
+        "description": "Complete installation of fire protection systems including sprinklers, fire alarms, suppression systems, and emergency lighting for commercial and residential properties.",
+        "icon": "🔧",
+        "image": "images/service-installation.png",
+        "features": [
+            "Fire Sprinkler Systems",
+            "Fire Alarm Systems",
+            "Suppression Systems",
+            "Emergency Lighting"
+        ]
+    },
+    {
+        "id": "inspection",
+        "title": "Fire Safety Inspection",
+        "description": "Comprehensive fire safety inspections to ensure your systems meet all local and national fire codes. Our certified inspectors provide detailed reports and recommendations.",
+        "icon": "🔍",
+        "image": "images/service-inspection.png",
+        "features": [
+            "Code Compliance Checks",
+            "Detailed Reports",
+            "Risk Assessment",
+            "Certification Documentation"
+        ]
+    },
+    {
+        "id": "testing",
+        "title": "System Testing",
+        "description": "Regular testing of all fire protection equipment to guarantee optimal performance when you need it most. We test alarms, sprinklers, extinguishers, and more.",
+        "icon": "✓",
+        "image": "images/service-testing.png",
+        "features": [
+            "Alarm Testing",
+            "Sprinkler Testing",
+            "Extinguisher Testing",
+            "Emergency System Tests"
+        ]
+    },
+    {
+        "id": "maintenance",
+        "title": "Preventive Maintenance",
+        "description": "Scheduled maintenance programs to keep your fire safety systems in peak condition. Prevent costly repairs and ensure continuous protection.",
+        "icon": "🛠",
+        "image": "images/service-maintenance.png",
+        "features": [
+            "Scheduled Service Plans",
+            "Component Replacement",
+            "System Updates",
+            "24/7 Support"
+        ]
+    },
+    {
+        "id": "consultation",
+        "title": "Safety Consultation",
+        "description": "Expert consultation services to help you design the perfect fire protection strategy for your building. We assess risks and recommend tailored solutions.",
+        "icon": "📋",
+        "image": "images/service-consultation.png",
+        "features": [
+            "Risk Analysis",
+            "System Design",
+            "Budget Planning",
+            "Compliance Guidance"
+        ]
+    },
+    {
+        "id": "emergency",
+        "title": "Emergency Response",
+        "description": "24/7 emergency services for urgent fire safety issues. Our rapid response team is always ready to address critical system failures and repairs.",
+        "icon": "🚨",
+        "image": "images/service-emergency.png",
+        "features": [
+            "24/7 Availability",
+            "Rapid Response",
+            "Emergency Repairs",
+            "Priority Service"
+        ]
+    }
+]

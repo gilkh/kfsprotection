@@ -16,10 +16,271 @@ const contactForm = document.getElementById('contactForm');
 const formMessage = document.getElementById('formMessage');
 
 // ============================================
-// Data Storage
+// Data Storage - Embedded for performance
 // ============================================
-let servicesData = [];
-let productsData = [];
+const servicesData = [
+    {
+        "id": "installation",
+        "title": "System Installation",
+        "description": "Complete installation of fire protection systems including sprinklers, fire alarms, suppression systems, and emergency lighting for commercial and residential properties.",
+        "icon": "🔧",
+        "image": "images/service-installation.png",
+        "features": [
+            "Fire Sprinkler Systems",
+            "Fire Alarm Systems",
+            "Suppression Systems",
+            "Emergency Lighting"
+        ]
+    },
+    {
+        "id": "inspection",
+        "title": "Fire Safety Inspection",
+        "description": "Comprehensive fire safety inspections to ensure your systems meet all local and national fire codes. Our certified inspectors provide detailed reports and recommendations.",
+        "icon": "🔍",
+        "image": "images/service-inspection.png",
+        "features": [
+            "Code Compliance Checks",
+            "Detailed Reports",
+            "Risk Assessment",
+            "Certification Documentation"
+        ]
+    },
+    {
+        "id": "testing",
+        "title": "System Testing",
+        "description": "Regular testing of all fire protection equipment to guarantee optimal performance when you need it most. We test alarms, sprinklers, extinguishers, and more.",
+        "icon": "✓",
+        "image": "images/service-testing.png",
+        "features": [
+            "Alarm Testing",
+            "Sprinkler Testing",
+            "Extinguisher Testing",
+            "Emergency System Tests"
+        ]
+    },
+    {
+        "id": "maintenance",
+        "title": "Preventive Maintenance",
+        "description": "Scheduled maintenance programs to keep your fire safety systems in peak condition. Prevent costly repairs and ensure continuous protection.",
+        "icon": "🛠",
+        "image": "images/service-maintenance.png",
+        "features": [
+            "Scheduled Service Plans",
+            "Component Replacement",
+            "System Updates",
+            "24/7 Support"
+        ]
+    },
+    {
+        "id": "consultation",
+        "title": "Safety Consultation",
+        "description": "Expert consultation services to help you design the perfect fire protection strategy for your building. We assess risks and recommend tailored solutions.",
+        "icon": "📋",
+        "image": "images/service-consultation.png",
+        "features": [
+            "Risk Analysis",
+            "System Design",
+            "Budget Planning",
+            "Compliance Guidance"
+        ]
+    },
+    {
+        "id": "emergency",
+        "title": "Emergency Response",
+        "description": "24/7 emergency services for urgent fire safety issues. Our rapid response team is always ready to address critical system failures and repairs.",
+        "icon": "🚨",
+        "image": "images/service-emergency.png",
+        "features": [
+            "24/7 Availability",
+            "Rapid Response",
+            "Emergency Repairs",
+            "Priority Service"
+        ]
+    }
+];
+
+const productsData = [
+    {
+        "id": "ext-abc-5kg",
+        "name": "ABC Dry Powder Extinguisher",
+        "category": "Fire Extinguishers",
+        "description": "Multi-purpose dry chemical fire extinguisher suitable for Class A, B, and C fires. Ideal for offices, homes, and vehicles.",
+        "specs": {
+            "capacity": "5 kg",
+            "rating": "3A:40B:C",
+            "range": "4-6 meters",
+            "discharge": "15-20 seconds"
+        },
+        "price": "From $45",
+        "image": "images/extinguisher.png",
+        "featured": true
+    },
+    {
+        "id": "ext-co2-5kg",
+        "name": "CO2 Fire Extinguisher",
+        "category": "Fire Extinguishers",
+        "description": "Carbon dioxide extinguisher for electrical fires and flammable liquids. Leaves no residue, perfect for server rooms and laboratories.",
+        "specs": {
+            "capacity": "5 kg",
+            "rating": "55B",
+            "range": "1-3 meters",
+            "discharge": "10-15 seconds"
+        },
+        "price": "From $85",
+        "image": "images/extinguisher.png",
+        "featured": true
+    },
+    {
+        "id": "detector-smoke-optical",
+        "name": "Optical Smoke Detector",
+        "category": "Smoke Detectors",
+        "description": "Advanced optical smoke detector with LED indicator and low battery warning. Suitable for bedrooms, living areas, and corridors.",
+        "specs": {
+            "power": "9V Battery / 240V Mains",
+            "coverage": "Up to 60m²",
+            "sensitivity": "EN 14604 Compliant",
+            "alarm": "85dB at 3m"
+        },
+        "price": "From $25",
+        "image": "images/smoke-detector.png",
+        "featured": true
+    },
+    {
+        "id": "detector-heat",
+        "name": "Heat Detector",
+        "category": "Smoke Detectors",
+        "description": "Fixed temperature heat detector ideal for kitchens and garages where smoke detectors may cause false alarms.",
+        "specs": {
+            "trigger": "57°C Fixed Temperature",
+            "coverage": "Up to 50m²",
+            "certification": "EN 54-5",
+            "alarm": "85dB at 3m"
+        },
+        "price": "From $35",
+        "image": "images/smoke-detector.png",
+        "featured": false
+    },
+    {
+        "id": "alarm-panel-4zone",
+        "name": "4-Zone Fire Alarm Panel",
+        "category": "Alarm Panels",
+        "description": "Conventional 4-zone fire alarm control panel with battery backup. Perfect for small to medium commercial buildings.",
+        "specs": {
+            "zones": "4 Zones",
+            "backup": "24hr Battery Backup",
+            "outputs": "2 Sounder Circuits",
+            "certification": "EN 54-2/4"
+        },
+        "price": "From $320",
+        "image": "images/alarm-panel.png",
+        "featured": true
+    },
+    {
+        "id": "alarm-panel-8zone",
+        "name": "8-Zone Fire Alarm Panel",
+        "category": "Alarm Panels",
+        "description": "Expandable 8-zone fire alarm control panel with advanced features including event logging and network connectivity.",
+        "specs": {
+            "zones": "8 Zones (Expandable)",
+            "backup": "72hr Battery Backup",
+            "outputs": "4 Sounder Circuits",
+            "certification": "EN 54-2/4"
+        },
+        "price": "From $580",
+        "image": "images/alarm-panel.png",
+        "featured": false
+    },
+    {
+        "id": "hose-reel-25m",
+        "name": "Fire Hose Reel - 25m",
+        "category": "Fire Hoses",
+        "description": "Wall-mounted fire hose reel with 25 meters of 19mm hose. Manual or automatic swing arm options available.",
+        "specs": {
+            "length": "25 meters",
+            "diameter": "19mm",
+            "pressure": "12 Bar Max",
+            "nozzle": "Adjustable Spray/Jet"
+        },
+        "price": "From $180",
+        "image": "images/hose-reel.png",
+        "featured": true
+    },
+    {
+        "id": "hose-cabinet",
+        "name": "Fire Hose Cabinet",
+        "category": "Fire Hoses",
+        "description": "Steel fire hose cabinet with safety glass door. Can accommodate hose reel and extinguisher.",
+        "specs": {
+            "material": "Powder Coated Steel",
+            "size": "600x800x250mm",
+            "door": "Safety Glass with Break Rod",
+            "finish": "Red RAL 3000"
+        },
+        "price": "From $95",
+        "image": "images/hose-reel.png",
+        "featured": false
+    },
+    {
+        "id": "emergency-light-led",
+        "name": "LED Emergency Light",
+        "category": "Emergency Lighting",
+        "description": "High-output LED emergency light with 3-hour battery backup. Self-testing function with LED status indicator.",
+        "specs": {
+            "lumens": "400 lm",
+            "battery": "3hr Lithium Backup",
+            "testing": "Auto Self-Test",
+            "certification": "EN 60598-2-22"
+        },
+        "price": "From $65",
+        "image": "images/emergency-light.png",
+        "featured": true
+    },
+    {
+        "id": "exit-sign-led",
+        "name": "Illuminated Exit Sign",
+        "category": "Emergency Lighting",
+        "description": "LED illuminated exit sign with emergency battery backup. Surface or recessed mounting options.",
+        "specs": {
+            "type": "LED Illuminated",
+            "battery": "3hr Backup",
+            "mounting": "Surface/Recessed",
+            "visibility": "Up to 30m"
+        },
+        "price": "From $45",
+        "image": "images/emergency-light.png",
+        "featured": false
+    },
+    {
+        "id": "sprinkler-head-pendent",
+        "name": "Pendent Sprinkler Head",
+        "category": "Sprinkler Systems",
+        "description": "Standard response pendent sprinkler head for commercial and residential fire suppression systems.",
+        "specs": {
+            "response": "Standard Response",
+            "temperature": "68°C (155°F)",
+            "kFactor": "K5.6",
+            "finish": "Chrome/White/Brass"
+        },
+        "price": "From $12",
+        "image": "images/sprinkler.png",
+        "featured": false
+    },
+    {
+        "id": "fire-blanket-1m",
+        "name": "Fire Blanket 1m x 1m",
+        "category": "Fire Safety Equipment",
+        "description": "Woven glass fiber fire blanket for smothering small fires. Essential for kitchens and workshops.",
+        "specs": {
+            "size": "1m x 1m",
+            "material": "Woven Glass Fiber",
+            "temperature": "Up to 550°C",
+            "case": "Wall Mount PVC Case"
+        },
+        "price": "From $22",
+        "image": "images/extinguisher.png",
+        "featured": false
+    }
+];
 
 // ============================================
 // Optimized Image Helper
@@ -186,15 +447,12 @@ function initAnimations() {
 // ============================================
 // Load Services Data
 // ============================================
-async function loadServices() {
-    try {
-        const response = await fetch('data/services.json');
-        servicesData = await response.json();
-        renderServices();
-    } catch (error) {
-        console.error('Error loading services:', error);
-        renderServicesPlaceholder();
-    }
+// ============================================
+// Load Services Data
+// ============================================
+// Data is now embedded for performance
+function loadServices() {
+    renderServices();
 }
 
 function renderServices() {
@@ -237,16 +495,13 @@ function renderServicesPlaceholder() {
 // ============================================
 // Load Products Data
 // ============================================
-async function loadProducts() {
-    try {
-        const response = await fetch('data/products.json');
-        productsData = await response.json();
-        renderProducts('all');
-        initProductFilters();
-    } catch (error) {
-        console.error('Error loading products:', error);
-        renderProductsPlaceholder();
-    }
+// ============================================
+// Load Products Data
+// ============================================
+// Data is now embedded for performance
+function loadProducts() {
+    renderProducts('all');
+    initProductFilters();
 }
 
 function initProductFilters() {

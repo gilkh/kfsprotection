@@ -63,7 +63,7 @@ function createOptimizedImage(imagePath, alt, className = '') {
         <picture>
             <source srcset="${paths.webp}" type="image/webp">
             <source srcset="${paths.png}" type="image/png">
-            <img src="${paths.png}" alt="${alt}" loading="lazy" ${classAttr}>
+            <img src="${paths.png}" alt="${alt}" loading="lazy" ${classAttr} onload="this.classList.add('loaded')">
         </picture>
     `;
 }

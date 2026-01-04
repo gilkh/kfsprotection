@@ -11,18 +11,87 @@
     <meta name="author" content="KFS Protection">
     <title>KFS Protection | Professional Fire Safety Solutions</title>
 
-    <!-- Fonts -->
+    <!-- Preload critical assets for faster loading -->
+    <link rel="preload" href="images/web/hero.webp" as="image" type="image/webp">
+    <link rel="preload" href="index.css" as="style">
+    <link rel="preload" href="script.js" as="script">
+
+    <!-- DNS Prefetch and Preconnect for external resources -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Fonts with display swap for faster text rendering -->
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap"
         rel="stylesheet">
 
-    <!-- Styles -->
+    <!-- Critical CSS inline for above-the-fold content -->
+    <style>
+        /* Critical CSS for initial render - prevents flash of unstyled content */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            background: #fff;
+            overflow-x: hidden
+        }
+
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #171717
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            background-image: url('images/web/hero.webp');
+            background-size: cover;
+            background-position: center
+        }
+
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, .7) 0%, rgba(0, 0, 0, .4) 50%, rgba(0, 0, 0, .8) 100%);
+            z-index: 1
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 0
+        }
+    </style>
+
+    <!-- Main Styles -->
     <link rel="stylesheet" href="index.css">
 
-    <!-- Favicon (placeholder) -->
-    <link rel="icon" type="image/png" href="images/logo.png">
+    <!-- Favicon -->
+    <link rel="icon" type="image/webp" href="images/web/logo.webp">
 </head>
 
 <body>

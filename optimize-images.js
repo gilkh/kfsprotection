@@ -5,21 +5,21 @@ const path = require('path');
 const IMAGES_DIR = './images';
 const OUTPUT_DIR = './images/web';
 
-// Configuration for different image types
+// Configuration for different image types - balanced for quality and speed
 const CONFIG = {
-    // Hero and large banner images - max 800px width
+    // Hero and large banner images
     large: {
         width: 800,
         quality: 75,
         patterns: ['hero', 'about']
     },
-    // Service and product images - max 400px width
+    // Service and product images
     medium: {
         width: 400,
         quality: 75,
         patterns: ['service-', 'extinguisher', 'sprinkler', 'smoke-detector', 'alarm-panel', 'hose-reel', 'emergency-light']
     },
-    // Logo and icons - keep smaller
+    // Logo and icons
     small: {
         width: 200,
         quality: 80,
@@ -34,7 +34,7 @@ async function optimizeImages() {
 
         // Get all PNG/JPG files in images directory
         const files = await fs.readdir(IMAGES_DIR);
-        const imageFiles = files.filter(f => 
+        const imageFiles = files.filter(f =>
             /\.(png|jpg|jpeg)$/i.test(f) && !f.includes('web')
         );
 
@@ -43,7 +43,7 @@ async function optimizeImages() {
         for (const file of imageFiles) {
             const inputPath = path.join(IMAGES_DIR, file);
             const baseName = path.parse(file).name;
-            
+
             // Determine configuration based on filename
             let config = CONFIG.medium; // default
             for (const [key, value] of Object.entries(CONFIG)) {
@@ -60,7 +60,7 @@ async function optimizeImages() {
             // Generate WebP version
             const webpOutput = path.join(OUTPUT_DIR, `${baseName}.webp`);
             await sharp(inputPath)
-                .resize(config.width, null, { 
+                .resize(config.width, null, {
                     withoutEnlargement: true,
                     fit: 'inside'
                 })
@@ -70,7 +70,7 @@ async function optimizeImages() {
             // Also generate a fallback PNG for browsers without WebP support
             const pngOutput = path.join(OUTPUT_DIR, `${baseName}.png`);
             await sharp(inputPath)
-                .resize(config.width, null, { 
+                .resize(config.width, null, {
                     withoutEnlargement: true,
                     fit: 'inside'
                 })
